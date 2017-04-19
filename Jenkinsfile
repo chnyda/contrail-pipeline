@@ -41,6 +41,8 @@ try {
 // Define global variables
 def timestamp = common.getDatetime()
 def version = SOURCE_BRANCH.replace('R', '') + "~${timestamp}"
+if (SOURCE_BRANCH == "master")
+    version = "666~${timestamp}"
 
 def components = [
     ["contrail-build", "tools/build", SOURCE_BRANCH],
@@ -105,7 +107,7 @@ try {
 def git_commit = [:]
 def properties = [:]
 def aptlyRepo = APTLY_REPO
-if (gerritProject == "")
+if (gerritProject != "")
     aptlyRepo = "${APTLY_REPO}-exp"
 
 def buildSourcePackageStep(img, pkg, version) {
