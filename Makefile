@@ -26,9 +26,11 @@ shell:
 
 build-shell:
 	$(eval PACKAGE ?= contrail)
+ifneq ($(KEEP_PACKAGE),yes)
 	(rm -rf src/build/${PACKAGE} || true)
+endif
 	docker run -u 1000 -it -v $(CWD):$(CWD) -w $(CWD) --rm=true build-$(OS)-$(DIST)-$(ARCH) /bin/bash -c "dpkg-source -x src/build/packages/${PACKAGE}_*.dsc src/build/${PACKAGE}; \
-		cd src/build/${PACKAGE}; sudo apt-get update; dpkg-checkbuilddeps 2>&1|rev|cut -d : -f 1|rev|sed 's,(.*),,g'|xargs sudo apt-get install -y; bash"
+		cd src/build/${PACKAGE}; sudo apt-get update; dpkg-checkbuilddeps 2>&1|rev|cut -d : -f 1|rev|sed 's,([^)]*),,g'|xargs sudo apt-get install -y; bash"
 
 clean:
 	rm -rf src/build
@@ -73,10 +75,10 @@ build-binary-%:
 	$(eval PACKAGE := $(patsubst build-binary-%,%,$@))
 	(rm -rf src/build/${PACKAGE} || true)
 	docker run -u 1000 -t -v $(CWD):$(CWD) -w $(CWD) --rm=true build-$(OS)-$(DIST)-$(ARCH) /bin/bash -c "dpkg-source -x src/build/packages/${PACKAGE}_*.dsc src/build/${PACKAGE}; \
-		cd src/build/${PACKAGE}; sudo apt-get update; dpkg-checkbuilddeps 2>&1|rev|cut -d : -f 1|rev|sed 's,(.*),,g'|xargs sudo apt-get install -y; \
-		cd src/build/${pkg}; debuild --no-lintian -uc -us ${opts}"
+		cd src/build/${PACKAGE}; sudo apt-get update; dpkg-checkbuilddeps 2>&1|rev|cut -d : -f 1|rev|sed 's,([^)]*),,g'|xargs sudo apt-get install -y; \
+		debuild --no-lintian ${OPTS} -uc -us"
 
 checkout:
-	mr --trust-all -j4 --force update
+	SOURCE_BRANCH=${SOURCE_BRANCH} GIT_CONTRAIL_BASE=${GIT_CONTRAIL_BASE} mr --trust-all -j4 --force update
 	(test -e src/SConstruct || ln -s tools/build/SConstruct src/SConstruct)
 	(test -e src/packages.make || ln -s tools/packages/packages.make src/packages.make)
