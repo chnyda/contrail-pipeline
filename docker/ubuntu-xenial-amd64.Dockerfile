@@ -58,6 +58,7 @@ RUN apt-get update && apt-get install -y \
         npm \
         dh-systemd \
         devscripts \
+        lsof \
         eatmydata \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

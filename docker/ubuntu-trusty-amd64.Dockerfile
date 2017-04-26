@@ -56,6 +56,7 @@ RUN apt-get update && apt-get install -y \
         nodejs-legacy \
         npm \
         devscripts \
+        lsof \
         eatmydata \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
