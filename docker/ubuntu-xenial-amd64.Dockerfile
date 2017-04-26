@@ -59,6 +59,7 @@ RUN apt-get update && apt-get install -y \
         dh-systemd \
         devscripts \
         lsof \
+        psmisc \
         eatmydata \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
