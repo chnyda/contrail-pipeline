@@ -63,6 +63,8 @@ def components = [
     ["contrail-web-core", "contrail-web-core", SOURCE_BRANCH],
     ["contrail-webui-third-party", "contrail-webui-third-party", SOURCE_BRANCH]
 ]
+if (SOURCE_BRANCH == "R3.2")
+    components << ["contrail-dpdk", "third_party/dpdk", "contrail_dpdk_2_1"]
 
 def sourcePackages = [
     "contrail-web-core",
