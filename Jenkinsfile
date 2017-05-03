@@ -61,10 +61,9 @@ def components = [
     ["contrail-web-server-manager", "contrail-web-server-manager", SOURCE_BRANCH],
     ["contrail-web-controller", "contrail-web-controller", SOURCE_BRANCH],
     ["contrail-web-core", "contrail-web-core", SOURCE_BRANCH],
-    ["contrail-webui-third-party", "contrail-webui-third-party", SOURCE_BRANCH]
+    ["contrail-webui-third-party", "contrail-webui-third-party", SOURCE_BRANCH],
+    ["contrail-dpdk", "third_party/dpdk", "contrail_dpdk_2_1"]
 ]
-if (SOURCE_BRANCH == "R3.2" || SOURCE_BRANCH == "master")
-    components << ["contrail-dpdk", "third_party/dpdk", "contrail_dpdk_2_1"]
 
 def sourcePackages = [
     "contrail-web-core",
