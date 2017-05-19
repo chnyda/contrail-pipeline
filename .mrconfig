@@ -77,3 +77,7 @@ checkout = git_checkout contrail-web-core contrail-web-core $SOURCE_BRANCH
 [src/contrail-webui-third-party]
 skip = lazy
 checkout = git_checkout contrail-webui-third-party contrail-webui-third-party $SOURCE_BRANCH
+
+[src/third_party/dpdk]
+skip = lazy
+checkout = git_checkout contrail-dpdk dpdk $SOURCE_BRANCH
