@@ -208,31 +208,36 @@ node('docker') {
             def imgName = "${OS}-${DIST}-${ARCH}"
             def img
             stage("build-source") {
-                if (art) {
-                    docker.withRegistry("${art.docker.proto}://in-dockerhub-${timestamp}.${art.docker.base}", "artifactory") {
-                        // Hack to set custom docker registry for base image
-                        sh "git checkout -f docker/${imgName}.Dockerfile; sed -i -e 's,^FROM ,FROM in-dockerhub-${timestamp}.${art.docker.base}/,g' docker/${imgName}.Dockerfile"
+                try {
+                    img = docker.image("tcpcloud/build-opencontrail-${imgName}")
+                    img.pull()
+                } catch (Throwable e) {
+                    if (art) {
+                        docker.withRegistry("${art.docker.proto}://in-dockerhub-${timestamp}.${art.docker.base}", "artifactory") {
+                            // Hack to set custom docker registry for base image
+                            sh "git checkout -f docker/${imgName}.Dockerfile; sed -i -e 's,^FROM ,FROM in-dockerhub-${timestamp}.${art.docker.base}/,g' docker/${imgName}.Dockerfile"
+                            img = docker.build(
+                                "${imgName}:${timestamp}",
+                                [
+                                    "--build-arg uid=${jenkinsUID}",
+                                    "--build-arg artifactory_url=${art.url}",
+                                    "--build-arg timestamp=${timestamp}",
+                                    "-f docker/${imgName}.Dockerfile",
+                                    "docker"
+                                ].join(' ')
+                            )
+                        }
+                    } else {
                         img = docker.build(
                             "${imgName}:${timestamp}",
                             [
                                 "--build-arg uid=${jenkinsUID}",
-                                "--build-arg artifactory_url=${art.url}",
                                 "--build-arg timestamp=${timestamp}",
                                 "-f docker/${imgName}.Dockerfile",
                                 "docker"
                             ].join(' ')
                         )
                     }
-                } else {
-                    img = docker.build(
-                        "${imgName}:${timestamp}",
-                        [
-                            "--build-arg uid=${jenkinsUID}",
-                            "--build-arg timestamp=${timestamp}",
-                            "-f docker/${imgName}.Dockerfile",
-                            "docker"
-                        ].join(' ')
-                    )
                 }
 
                 img.inside {
