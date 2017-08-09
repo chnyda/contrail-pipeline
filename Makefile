@@ -1,9 +1,9 @@
-SOURCE_BRANCH ?= "R3.2"
+SOURCE_BRANCH ?= "R4.0"
 GIT_CONTRAIL_BASE ?= https://github.com/Mirantis
 CWD=$(shell pwd)
 
 OS   ?= ubuntu
-DIST ?= trusty
+DIST ?= xenial
 ARCH ?= amd64
 
 all: checkout build-image build-source build-binary

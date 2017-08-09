@@ -33,7 +33,7 @@ RUN [ "x${ARTIFACTORY_URL}" != "x" ] && ( \
 
 # Install requirements for Contrail build
 RUN apt-get update && apt-get install -y \
-        linux-headers-$(uname -r) \
+        linux-headers-generic \
         build-essential \
         dh-systemd \
         equivs \
