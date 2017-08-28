@@ -1,4 +1,5 @@
 SOURCE_BRANCH ?= "R4.0"
+DPDK_SOURCE_BRANCH ?= "contrail_dpdk_17_02"
 GIT_CONTRAIL_BASE ?= https://github.com/Mirantis
 CWD=$(shell pwd)
 
@@ -79,6 +80,6 @@ build-binary-%:
 		debuild --no-lintian ${OPTS} -uc -us"
 
 checkout:
-	SOURCE_BRANCH=${SOURCE_BRANCH} GIT_CONTRAIL_BASE=${GIT_CONTRAIL_BASE} mr --trust-all -j4 --force update
+	SOURCE_BRANCH=${SOURCE_BRANCH} DPDK_SOURCE_BRANCH=${DPDK_SOURCE_BRANCH} GIT_CONTRAIL_BASE=${GIT_CONTRAIL_BASE} mr --trust-all -j4 --force update
 	(test -e src/SConstruct || ln -s tools/build/SConstruct src/SConstruct)
 	(test -e src/packages.make || ln -s tools/packages/packages.make src/packages.make)

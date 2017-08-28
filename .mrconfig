@@ -80,4 +80,4 @@ checkout = git_checkout contrail-webui-third-party contrail-webui-third-party $S
 
 [src/third_party/dpdk]
 skip = lazy
-checkout = git_checkout contrail-dpdk dpdk $SOURCE_BRANCH
+checkout = git_checkout contrail-dpdk dpdk $DPDK_SOURCE_BRANCH
