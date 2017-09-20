@@ -218,6 +218,8 @@ node('docker') {
                                 "--build-arg uid=${jenkinsUID}",
                                 "--build-arg artifactory_url=${art.url}",
                                 "--build-arg timestamp=${timestamp}",
+                                "--build-arg extra_repo_url='deb http://172.16.48.254:8085/xenial/ testing extra'",
+                                "--build-arg extra_repo_key_url='http://172.16.48.254:8085/public.gpg'",
                                 "-f docker/${imgName}.Dockerfile",
                                 "docker"
                             ].join(' ')
